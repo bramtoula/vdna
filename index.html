@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="Visual DNA can represent images and datasets with high granularity, allowing conditional quantitative comparisons.">
+  <meta name="keywords" content="vDNA,v-DNA, Visual DNA">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Visual DNA: Representing and Comparing Images using Distributions of Neuron Activations</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/dna.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">Visual DNA:<br>Representing and Comparing Images using
+              Distributions of Neuron Activations</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://ori.ox.ac.uk/people/benjamin-ramtoula/">Benjamin Ramtoula</a>,</span>
+              <span class="author-block">
+                <a href="https://www.ori.ox.ac.uk/people/matt-gadd/">Matthew Gadd</a>,</span>
+              <span class="author-block">
+                <a href="https://www.ori.ox.ac.uk/people/paul-newman/">Paul Newman</a>,
+              </span>
+              <span class="author-block">
+                <a href="https://ori.ox.ac.uk/people/daniele-de-martini/">Daniele De Martini</a>,
+              </span>
+            </div>
+
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Oxford Robotics Institute<br>University of Oxford</span>
+              <!-- <span class="author-block"><sup>2</sup>Google Research</span> -->
+            </div>
+
+            <div class="column has-text-centered">
+              <span class="publication-venue">CVPR 2023</span>
+              <!-- <span class="author-block"><sup>2</sup>Google Research</span> -->
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv (coming soon...)</span>
+                  </a>
+                </span>
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code (coming soon...)</span>
+                  </a>
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+
+      <h2 class="title is-2 has-text-centered">Overview</h2>
+
+      <div class="hero-body">
+
+        <h2 class="title is-4">What are Visual DNAs useful for?</h2>
+
+        <div class="columns" style="align-items: flex-end;">
+          <div class="column is-two-fifths has-text-centered">
+            <img src="./static/images/overview_a.jpg" class="image" alt="Illustration of dataset comparisons" />
+            <p>Example usage comparing different datasets</p>
+          </div>
+          <div class="column is-three-fifths has-text-centered">
+            <img src="./static/images/overview_b.jpg" class="image"
+              alt="Illustration of image to dataset and image pairs comparisons" />
+            <p>Example usage comparing an image to a dataset or pairs of images.</p>
+          </div>
+        </div>
+        <h2 class="subtitle has-text-centered has-text-justified">
+          <strong>Visual DNAs</strong> allow you to generate compact granular representations of images and
+          datasets. Visual DNAs can be compared conditionally thanks to the granularity they provide.
+        </h2>
+      </div>
+      <h2 class="title is-4">What is a Visual DNA?</h2>
+      <div class="column is-centered">
+        <img src="./static/images/dna-overview-hist.svg" class="image" alt="Visualisation of Visual DNA composition" />
+        <h2 class="subtitle has-text-centered has-text-justified">
+          <p>
+            <strong>Visual DNAs</strong> consist in the <strong>D</strong>istributions of
+            <strong>N</strong>euron <strong>A</strong>ctivations of a pre-trained frozen feature extractor when the
+            images to represent are passed through it. We can accumulate activations from different images using
+            histograms or by fitting a Gaussian.
+          </p>
+          <p>Comparing Visual DNAs comes down to comparing distributions (histograms or Gaussians) for each neuron. We
+            don't expect all neurons of the pre-trained network to be sensitive to what we are interested in comparing.
+            This granularity allows to create custom comparisons that only rely on neurons of interest. <br> <br></p>
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-2">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              As modern Computer Vision relies increasingly on Deep Learning systems, selecting the best available
+              training dataset for the final deployment domain becomes essential. However, no general tools exist to
+              evaluate the ex- tent to which two datasets differ.
+            </p>
+            <p>
+              We propose representing images – and by extension datasets – using Distributions of Neuron Activations
+              (DNAs). DNAs fit distributions, such as histograms and Gaussians, to activations of neurons in a
+              pre-trained feature extractor through which we pass the image(s) to represent. This extractor is frozen
+              for all datasets, and we rely on its generally expressive power in feature space. By comparing two DNAs,
+              we can evaluate the extent to which two datasets differ with granular control over the comparison
+              attributes of interest, providing the ability to condition the way distances are measured on the task at
+              hand. Furthermore, DNAs are compact, rep- resenting datasets of any size in less than 15 megabytes.
+            </p>
+            <p>
+              We demonstrate the value of DNAs by evaluating their applica- bility on several tasks – conditional
+              dataset and image comparison, synthetic image evaluation, and transfer learning – and across diverse
+              datasets – from synthetic cat images to celebrity faces and urban driving scenes.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{ramtoula2023vdna,
+  author    = {Ramtoula, Benjamin and Gadd, Matthew and Newman, Paul and De Martini, Daniele},
+  title     = {Visual DNA: Representing and Comparing Images using Distributions of Neuron Activations},
+  journal   = {CVPR},
+  year      = {2023},
+}</code></pre>
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website was adapted from the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>
+              template, which is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
