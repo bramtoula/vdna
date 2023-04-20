@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "vdna"
-version = "0.1.0"
+version = "0.1.0b"
 authors = [
   { name="Benjamin Ramtoula", email="benjamin@robots.ox.ac.uk" },
 ]
