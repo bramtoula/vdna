@@ -1,0 +1,2 @@
+multiple_images/4.1.05.tiff
+single_image/Lenna_(test_image).png
