@@ -2,12 +2,24 @@
 <html>
 
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PR9C92GDJP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-PR9C92GDJP');
+  </script>
+
   <meta charset="utf-8">
   <meta name="description"
     content="Visual DNA can represent images and datasets with high granularity, allowing conditional quantitative comparisons.">
   <meta name="keywords" content="vDNA,v-DNA, Visual DNA">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Visual DNA: Representing and Comparing Images using Distributions of Neuron Activations</title>
+
+
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
@@ -17,7 +29,7 @@
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="icon" href="./static/images/dna.svg">
+  <link rel="icon" href="https://raw.githubusercontent.com/bramtoula/vdna-website/main/images/dna.svg">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="./static/js/fontawesome.all.min.js"></script>
@@ -29,6 +41,7 @@
 <body>
 
 
+
   <section class="hero">
     <div class="hero-body">
       <div class="container is-max-desktop">
@@ -38,14 +51,14 @@
               Distributions of Neuron Activations</h1>
             <div class="is-size-5 publication-authors">
               <span class="author-block">
-                <a href="https://ori.ox.ac.uk/people/benjamin-ramtoula/">Benjamin Ramtoula</a>,</span>
+                <a href="https://bramtoula.github.io">Benjamin Ramtoula</a>,</span>
               <span class="author-block">
-                <a href="https://www.ori.ox.ac.uk/people/matt-gadd/">Matthew Gadd</a>,</span>
+                <a href="https://mttgdd.github.io/">Matthew Gadd</a>,</span>
               <span class="author-block">
                 <a href="https://www.ori.ox.ac.uk/people/paul-newman/">Paul Newman</a>,
               </span>
               <span class="author-block">
-                <a href="https://ori.ox.ac.uk/people/daniele-de-martini/">Daniele De Martini</a>,
+                <a href="https://danieledema.github.io/">Daniele De Martini</a>,
               </span>
             </div>
 
@@ -73,11 +86,11 @@
                 </span>
                 <!-- Code Link. -->
                 <span class="link-block">
-                  <a href="" class="external-link button is-normal is-rounded is-dark">
+                  <a href="https://github.com/bramtoula/vdna" class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fab fa-github"></i>
                     </span>
-                    <span>Code (coming soon...)</span>
+                    <span>Code</span>
                   </a>
                 </span>
               </div>
@@ -91,23 +104,21 @@
 
 
 
-
   <section class="hero teaser">
     <div class="container is-max-desktop">
 
       <h2 class="title is-2 has-text-centered">Overview</h2>
 
       <div class="hero-body">
-
         <h2 class="title is-4">What are Visual DNAs useful for?</h2>
 
         <div class="columns" style="align-items: flex-end;">
           <div class="column is-two-fifths has-text-centered">
-            <img src="./static/images/overview_a.jpg" class="image" alt="Illustration of dataset comparisons" />
+            <img src="https://raw.githubusercontent.com/bramtoula/vdna-website/main/images/overview-a.png" class="image" alt="Illustration of dataset comparisons" />
             <p>Example usage comparing different datasets</p>
           </div>
           <div class="column is-three-fifths has-text-centered">
-            <img src="./static/images/overview_b.jpg" class="image"
+            <img src="https://raw.githubusercontent.com/bramtoula/vdna-website/main/images/overview-b.png" class="image"
               alt="Illustration of image to dataset and image pairs comparisons" />
             <p>Example usage comparing an image to a dataset or pairs of images.</p>
           </div>
@@ -119,21 +130,42 @@
       </div>
       <h2 class="title is-4">What is a Visual DNA?</h2>
       <div class="column is-centered">
-        <img src="./static/images/dna-overview-hist.svg" class="image" alt="Visualisation of Visual DNA composition" />
+        <img src="https://raw.githubusercontent.com/bramtoula/vdna-website/main/images/dna-overview-hist.png" class="image" alt="Visualisation of Visual DNA composition" />
         <h2 class="subtitle has-text-centered has-text-justified">
           <p>
-            <strong>Visual DNAs</strong> consist in the <strong>D</strong>istributions of
-            <strong>N</strong>euron <strong>A</strong>ctivations of a pre-trained frozen feature extractor when the
-            images to represent are passed through it. We can accumulate activations from different images using
-            histograms or by fitting a Gaussian.
+            <br>
+            <strong>Visual DNAs</strong> consist of the <strong>D</strong>istributions of
+            <strong>N</strong>euron <strong>A</strong>ctivations of a pre-trained frozen feature extractor when fed with
+            the images to represent. We then accumulate activations from different images using histograms or by fitting
+            a Gaussian.
           </p>
-          <p>Comparing Visual DNAs comes down to comparing distributions (histograms or Gaussians) for each neuron. We
-            don't expect all neurons of the pre-trained network to be sensitive to what we are interested in comparing.
-            This granularity allows to create custom comparisons that only rely on neurons of interest. <br> <br></p>
+          <p>Comparing Visual DNAs comes down to comparing distributions (histograms or Gaussians) for each neuron. As
+            we don't expect all neurons of the pre-trained network to be sensitive to the particular properties we are
+            interested in comparing, this granularity allows to create custom comparisons that only rely on neurons of
+            interest. <br> <br></p>
         </h2>
       </div>
+
+      <h2 class="title is-4">How can I use it?</h2>
+      <div class="column is-centered">
+        <h2 class="subtitle has-text-centered has-text-justified">
+          <p>
+            <mark>
+              <font face="Courier">pip install vdna</font>
+            </mark> <br> <br>
+          </p>
+
+          <p>Documentation available <a href="https://github.com/bramtoula/vdna">here.</a>
+          </p>
+        </h2>
+        <img src="https://raw.githubusercontent.com/bramtoula/vdna-website/main/videos/demo.gif" class="image" alt="Video of example usage of the library" />
+
+      </div>
+
     </div>
   </section>
+
+
 
   <section class="section">
     <div class="container is-max-desktop">
@@ -143,31 +175,121 @@
           <h2 class="title is-2">Abstract</h2>
           <div class="content has-text-justified">
             <p>
-              As modern Computer Vision relies increasingly on Deep Learning systems, selecting the best available
-              training dataset for the final deployment domain becomes essential. However, no general tools exist to
-              evaluate the ex- tent to which two datasets differ.
+              Selecting appropriate datasets is critical in modern computer vision. However, no general-purpose tools
+              exist to evaluate the extent to which two datasets differ.
             </p>
             <p>
-              We propose representing images – and by extension datasets – using Distributions of Neuron Activations
-              (DNAs). DNAs fit distributions, such as histograms and Gaussians, to activations of neurons in a
-              pre-trained feature extractor through which we pass the image(s) to represent. This extractor is frozen
+              For this, we propose representing images – and by extension datasets – using Distributions of Neuron
+              Activations (DNAs). DNAs fit distributions, such as histograms or Gaussians, to activations of neurons in
+              a pre-trained feature extractor through which we pass the image(s) to represent. This extractor is frozen
               for all datasets, and we rely on its generally expressive power in feature space. By comparing two DNAs,
               we can evaluate the extent to which two datasets differ with granular control over the comparison
-              attributes of interest, providing the ability to condition the way distances are measured on the task at
-              hand. Furthermore, DNAs are compact, rep- resenting datasets of any size in less than 15 megabytes.
+              attributes of interest, providing the ability to customise the way distances are measured to suit the
+              requirements of the task at hand. Furthermore, DNAs are compact, representing datasets of any size with
+              less than 15 megabytes.
             </p>
             <p>
-              We demonstrate the value of DNAs by evaluating their applica- bility on several tasks – conditional
-              dataset and image comparison, synthetic image evaluation, and transfer learning – and across diverse
-              datasets – from synthetic cat images to celebrity faces and urban driving scenes.
+              We demonstrate the value of DNAs by evaluating their applicability on several tasks, including conditional
+              dataset comparison, synthetic image evaluation, and transfer learning, and across diverse datasets,
+              ranging from synthetic cat images to celebrity faces and urban driving scenes
             </p>
           </div>
         </div>
       </div>
-
+      <!--/ Abstract. -->
     </div>
   </section>
 
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-2">Results</h2>
+          <div class="content has-text-justified">
+            <!-- Bias results -->
+            <h2 class="title is-4">Number of images required to represent a dataset</h2>
+            <div class="columns" style="align-items: flex-end;">
+              <div class="column is-half has-text-centered">
+                <img src="https://raw.githubusercontent.com/bramtoula/vdna-website/main/images/fid-bias.png" class="image" alt="Illustration of dataset comparisons" />
+                <p>Comparing datasets with FID requires thousands of samples to stabilise.</p>
+              </div>
+              <div class="column is-half has-text-centered">
+                <img src="https://raw.githubusercontent.com/bramtoula/vdna-website/main/images/emd-bias.png" class="image"
+                  alt="Illustration of image to dataset and image pairs comparisons" />
+                <p>Comparing datasets with DNAs can provide a stable result with a few hundred samples. </p>
+              </div>
+            </div>
+
+            <!-- CS comparisons -->
+            <h2 class="title is-4">Finding most similar images to a reference dataset</h2>
+            <div class="columns" style="align-items: flex-end;">
+              <div class="column has-text-centered">
+                <img src="https://raw.githubusercontent.com/bramtoula/vdna-website/main/images/cs-vs-others.jpg" class="image" alt="Illustration of dataset comparisons" />
+              </div>
+            </div>
+            <p class="content has-text-centered has-text-justified">
+              We can generate DNAs of datasets and images. In this experiment, we generate one DNA from multiple
+              Cityscapes images and DNAs for individual images from other datasets. We visualise the ranking of
+              individual image DNAs when compared to the Cityscapes DNA.
+            </p>
+
+
+            <!-- Faces comparisons -->
+            <h2 class="title is-4">Finding most similar images to a reference image</h2>
+            <div class="columns" style="align-items: flex-end;">
+              <div class="column is-centered">
+                <img src="https://raw.githubusercontent.com/bramtoula/vdna-website/main/images/faces-match.jpg" class="image" alt="Illustration of image pair comparison"
+                  width="400px" />
+              </div>
+            </div>
+            <p class="content has-text-centered has-text-justified">
+              Comparing DNAs of images with very few neurons can be sufficient to find images with similar semantic
+              attributes.
+            </p>
+
+
+            <!-- Attribute sensitivity removal -->
+            <h2 class="title is-4">Removing sensitivity to attributes when comparing DNAs</h2>
+            <div class="columns" style="align-items: flex-end;">
+              <div class="column is-centered">
+                <img src="https://raw.githubusercontent.com/bramtoula/vdna-website/main/images/celeba.png" class="image" alt="Illustration of sensitivity removal." />
+              </div>
+            </div>
+            <p class="content has-text-centered has-text-justified">
+              When comparing two DNAs, we can use weighted combinations of neurons to try and control what the
+              comparison is sensitive to. Here, we show the results of removing the sensitivity to specific attributes.
+              For each of the 40 attributes in CelebA, we use a weighted combination of distances over different layers
+              or neurons with weights optimised such that the resulting distance between DNAs of images with and without
+              the attribute becomes zero. We want to prevent sensitivity deviations over all 39 other attributes. This
+              highlights the power of the granularity of our proposed representation.
+            </p>
+
+
+            <!-- StyleGANv2 images ranking -->
+            <h2 class="title is-4">Selecting neurons for realism</h2>
+            <div class="columns" style="align-items: flex-end;">
+              <div class="column is-centered">
+                <img src="https://raw.githubusercontent.com/bramtoula/vdna-website/main/images/stylegan.jpg" class="image" alt="Illustration of fake image ranking" />
+              </div>
+            </div>
+            <p class="content has-text-centered has-text-justified">
+              When comparing DNAs of synthetic StyleGANv2 images to DNAs of the corresponding real datasets, we observe
+              that we can achieve better evaluations by selecting neurons that are more sensitive to differences between
+              real and synthetic images.
+            </p>
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
 
 
   <section class="section" id="BibTeX">
@@ -185,12 +307,17 @@
 
   <footer class="footer">
     <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link" href="https://github.com/bramtoula/vdna" class="external-link" disabled>
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
       <div class="columns is-centered">
         <div class="column is-8">
           <div class="content">
             <p>
               This website was adapted from the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>
-              template, which is licensed under a <a rel="license"
+              website, which is licensed under a <a rel="license"
                 href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
                 Commons Attribution-ShareAlike 4.0 International License</a>.
             </p>
