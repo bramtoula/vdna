@@ -29,9 +29,19 @@ We can also represent individual images and check their similarity to datasets o
 
 ## Resources
 This work was introduced in our paper:  
-Visual DNA: Representing and Comparing Images using Distributions of Neuron Activations  
+[Visual DNA: Representing and Comparing Images using Distributions of Neuron Activations](https://arxiv.org/abs/2304.10036)  
 [Benjamin Ramtoula](https://bramtoula.github.io), [Matthew Gadd](https://mttgdd.github.io/), [Paul Newman](https://www.ori.ox.ac.uk/people/paul-newman/), [Daniele de Martini](https://danieledema.github.io/)  
 CVPR 2023  
+
+Please consider citing our paper if you make use of this project in your research.
+```
+@article{ramtoula2023vdna,
+  author    = {Ramtoula, Benjamin and Gadd, Matthew and Newman, Paul and De Martini, Daniele},
+  title     = {Visual DNA: Representing and Comparing Images using Distributions of Neuron Activations},
+  journal   = {CVPR},
+  year      = {2023},
+}
+```
 
 You can also visit the [project website](https://bramtoula.github.io/vdna/).
 
