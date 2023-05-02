@@ -1,3 +1,4 @@
+from .vdna_activation_ranges import VDNAActivationRanges
 from .vdna_base import VDNA
 from .vdna_gauss import VDNAGauss
 from .vdna_hist import VDNAHist
@@ -13,5 +14,7 @@ def get_vdna(dist_name):
         n_bins = int(dist_name.split("-")[1])
         assert n_bins
         return VDNAHist(hist_nb_bins=n_bins)
+    elif dist_name == "activation-ranges":
+        return VDNAActivationRanges()
     else:
         raise NotImplementedError("VDNA {} not implemented!".format(dist_name))
