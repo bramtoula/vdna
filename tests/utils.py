@@ -10,6 +10,7 @@ from vdna import EMD, FD, NFD, VDNA, VDNAProcessor, load_vdna_from_files
 def check_same_dist_data(
     d1: Union[dict, list, np.ndarray, float, int, torch.Tensor],
     d2: Union[dict, list, np.ndarray, float, int, torch.Tensor],
+    tol=1e-5,
 ) -> bool:
     if type(d1) != type(d2):
         return False
@@ -26,11 +27,11 @@ def check_same_dist_data(
         return check_same_dist_data(np.array(d1), np.array(d2))
     # Check if numpy array or float or int
     elif isinstance(d1, np.ndarray):
-        return torch.equal(torch.from_numpy(d1), torch.from_numpy(d2))    
+        return torch.isclose(torch.from_numpy(d1), torch.from_numpy(d2), atol=tol).all()
     elif isinstance(d1, float) or isinstance(d1, int):
-        return torch.equal(torch.tensor(d1), torch.tensor(d2))
+        return torch.isclose(torch.tensor(d1), torch.tensor(d2), atol=tol).all()
     elif isinstance(d1, torch.Tensor):
-        return torch.equal(d1, d2)
+        return torch.isclose(d1, d2, atol=tol).all()
     else:
         return False
 

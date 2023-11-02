@@ -182,6 +182,8 @@ Here we detail supported options.
 ## Feature extractors
 - `mugs_vit_base` (default)
 - `mugs_vit_large`
+- `dinov2_small_224`
+- `dinov2_base_224`
 - `vgg16`
 - `inception`
 - `dino_resnet50`

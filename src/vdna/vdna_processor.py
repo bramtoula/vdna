@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from typing import List, Optional, Union
+import sys
 
 import numpy as np
 import torch
@@ -117,7 +118,7 @@ class VDNAProcessor:
             self.feat_extractor = get_feature_extractor(feat_extractor_name, extraction_settings)
 
             # Compile if we have torch version >= 2.0
-            if torch.__version__ >= "2.0":
+            if torch.__version__ >= "2.0" and sys.version_info < (3, 11):
                 self.feat_extractor = torch.compile(self.feat_extractor)
 
         self.last_extraction_settings_used = extraction_settings

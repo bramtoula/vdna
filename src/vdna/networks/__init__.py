@@ -3,6 +3,7 @@ from .feature_extraction_model import FeatureExtractionModel
 from .clip import CLIPImEncoder
 from .dino_resnet50 import resnet50_feat_extractor as DINOResnet50FeatExtractor
 from .dino_vit import DINOViTFeatExtractor
+from .dinov2 import DINOv2ViTFeatExtractor
 from .inception_pytorch import InceptionV3
 from .mugs_vit import MugsViTFeatExtractor
 from .random_resnet50 import resnet50_feat_extractor as RandomResnet50FeatExtractor
@@ -24,6 +25,9 @@ def get_feature_extractor(feature_extractor, extraction_settings):
         model = DINOViTFeatExtractor("base", extraction_settings=extraction_settings)
     elif feature_extractor == "dino_vit_small":
         model = DINOViTFeatExtractor("small", extraction_settings=extraction_settings)
+    elif "dinov2_" in feature_extractor:
+        model_version_and_im_size = feature_extractor[7:]
+        model = DINOv2ViTFeatExtractor(model_version_and_im_size, extraction_settings=extraction_settings)
     elif feature_extractor == "rand_resnet50":
         model = RandomResnet50FeatExtractor(extraction_settings=extraction_settings)
     elif feature_extractor == "vgg16":

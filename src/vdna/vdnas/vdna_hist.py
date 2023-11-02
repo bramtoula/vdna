@@ -43,7 +43,7 @@ class VDNAHist(VDNA):
         loaded_data = np.load(file_path)
         self.data = {}
         for layer in loaded_data:
-            self.data[layer] = torch.from_numpy(loaded_data[layer]).to(device)
+            self.data[layer] = torch.from_numpy(loaded_data[layer]).to(device).long()
 
     def get_neuron_dist(self, layer_name: str, neuron_idx: int) -> torch.Tensor:
         return self.data[layer_name][neuron_idx].reshape(1, -1)

@@ -30,6 +30,8 @@ from utils import get_test_vdnas, check_save_load, compare_vdnas
         "dino_vit_base",
         "rand_resnet50",
         "clip_im_vit_b16",
+        "dinov2_small_224",
+        "dinov2_base_224",
     ],
 )
 class TestVDNAs:
