@@ -18,7 +18,7 @@ class VDNAActivationRanges(VDNA):
         feat_extractor.extraction_settings.keep_only_min_max = True
         return feat_extractor
 
-    def _fit_distribution(self, features_dict):
+    def fit_distribution(self, features_dict):
         self.data = {}
         for layer in features_dict:
             self.data[layer] = {}
@@ -71,3 +71,13 @@ class VDNAActivationRanges(VDNA):
             mins.append(self.data[layer_name]["min"])
             maxs.append(self.data[layer_name]["max"])
         return {"min": torch.cat(mins), "max": torch.cat(maxs)}
+
+    def __add__(self, other):
+        new_vdna = VDNAActivationRanges()
+        new_vdna = self._common_before_add(other, new_vdna)
+
+        for layer in self.data:
+            new_vdna.data[layer] = {}
+            new_vdna.data[layer]["min"] = torch.min(self.data[layer]["min"], other.data[layer]["min"])
+            new_vdna.data[layer]["max"] = torch.max(self.data[layer]["max"], other.data[layer]["max"])
+        return new_vdna

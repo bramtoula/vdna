@@ -182,8 +182,6 @@ Here we detail supported options.
 ## Feature extractors
 - `mugs_vit_base` (default)
 - `mugs_vit_large`
-- `dinov2_small_224`
-- `dinov2_base_224`
 - `vgg16`
 - `inception`
 - `dino_resnet50`
@@ -206,7 +204,8 @@ Here we detail supported options.
 - `activation-ranges`:
   - This keeps track of minimum and maximum activation values for each neuron.
   - Can be useful to get neuron activation ranges used for normalisation for histograms (see [documentation about adding your feature extractor](docs/add_your_feature_extractor.md))
-
+- `features`:
+  - This keeps track of the raw features without any distribution fit.
 
 ## FID computation
 The commonly used Fréchet Inception Distance (FID) can be computed by creating VDNAs with the `inception` feature extractor and the `layer-gaussian` distribution.

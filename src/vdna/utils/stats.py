@@ -5,8 +5,10 @@ import torch
 from scipy.linalg import sqrtm
 
 
-def histogram_per_channel(data: torch.Tensor, hist_nb_bins: int, hist_range: List[float]) -> torch.Tensor:
-    # Takes array of size (B,C,H,W) and returns histogram counts of values in specified dims. out shape is (C,bin_number)
+def histogram_per_channel(
+    data: torch.Tensor, hist_nb_bins: int, hist_range: List[float], keep_samples_separate: bool = False
+) -> torch.Tensor:
+    # Takes array of size (B,C,H,W) and returns histogram counts of values in specified dims. out shape is (C,bin_number) if keep_samples_separate is False, (B,C,bin_number) if it is True.
     # For a single element in the batch, we can afford to handle all channels simultaneously. Memory explodes if we have more elements.
 
     # Make sure values are in range
@@ -18,18 +20,31 @@ def histogram_per_channel(data: torch.Tensor, hist_nb_bins: int, hist_range: Lis
         bin_edges_left = bin_edges[:-1]
         bin_edges_right = bin_edges[1:]
         data_expanded = data.unsqueeze(-1)
-        out = torch.logical_and(data_expanded >= bin_edges_left, data_expanded <= bin_edges_right).sum((0, 2, 3))
+        out = torch.logical_and(data_expanded >= bin_edges_left, data_expanded <= bin_edges_right)
+        if keep_samples_separate:
+            out = out.sum((2, 3))
+        else:
+            out = out.sum((0, 2, 3))
 
-    # For more activations, we just do it channel by channel
-    else:
-        out = torch.zeros((data.shape[1], hist_nb_bins), dtype=torch.long).to(data.device)
-        for c in range(data.shape[1]):
-            out[c] = torch.histc(
-                data[:, c, :, :].flatten(),
-                bins=hist_nb_bins,
-                min=hist_range[0],
-                max=hist_range[1],
+    # If we couldn't do it all in once and want to keep samples separate, we'll have to iterate
+    elif keep_samples_separate:
+        out = torch.zeros((data.shape[0], data.shape[1], hist_nb_bins), dtype=torch.long).to(data.device)
+        for b in range(data.shape[0]):
+            out[b] = histogram_per_channel(
+                data[b : b + 1, :, :, :], hist_nb_bins, hist_range, keep_samples_separate=False
             )
+
+    # For more activations and using all samples, we just do it channel by channel
+    else:
+        if not keep_samples_separate:
+            out = torch.zeros((data.shape[1], hist_nb_bins), dtype=torch.long).to(data.device)
+            for c in range(data.shape[1]):
+                out[c] = torch.histc(
+                    data[:, c, :, :].flatten(),
+                    bins=hist_nb_bins,
+                    min=hist_range[0],
+                    max=hist_range[1],
+                )
     return out
 
 

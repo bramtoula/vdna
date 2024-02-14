@@ -28,8 +28,8 @@ class NetworkSettings:
 @dataclass
 class ExtractionSettings:
     average_feats_spatially: bool = False
-    accumulate_spatial_feats_in_hist: bool = False
-    accumulate_sample_feats_in_hist: bool = False
+    accumulate_feats_in_hist: bool = False
+    keep_sample_feats_separate: bool = False
     keep_only_min_max: bool = False
     normalise_feats: bool = False
     range_scale_for_norm_params: float = 1.2

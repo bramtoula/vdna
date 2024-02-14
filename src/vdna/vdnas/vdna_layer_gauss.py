@@ -49,7 +49,7 @@ class VDNALayerGauss(VDNA):
             self.data[layer]["mu"] = torch.from_numpy(loaded_data["mu-" + layer]).to(device)
             self.data[layer]["sigma"] = torch.from_numpy(loaded_data["sigma-" + layer]).to(device)
 
-    def _fit_distribution(self, features_dict):
+    def fit_distribution(self, features_dict):
         self.data = {}
         for layer in features_dict:
             self.data[layer] = _get_gaussian_params(features_dict[layer])
@@ -65,3 +65,22 @@ class VDNALayerGauss(VDNA):
 
     def get_all_neurons_dists(self):
         return self.data
+
+    def __add__(self, other):
+        new_vdna = VDNALayerGauss()
+        new_vdna = self._common_before_add(other, new_vdna)
+
+        for layer in self.data:
+            new_vdna.data[layer] = {}
+            new_vdna.data[layer]["mu"] = (
+                self.data[layer]["mu"] * self.num_images + other.data[layer]["mu"] * other.num_images
+            ) / (self.num_images + other.num_images)
+
+            new_vdna.data[layer]["sigma"] = (
+                self.data[layer]["sigma"] * (self.num_images - 1)
+                + self.num_images * (self.data[layer]["mu"] - new_vdna.data[layer]["mu"]) ** 2
+                + other.data[layer]["sigma"] * (other.num_images - 1)
+                + other.num_images * (other.data[layer]["mu"] - new_vdna.data[layer]["mu"]) ** 2
+            ) / (self.num_images + other.num_images - 1)
+
+        return new_vdna

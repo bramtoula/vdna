@@ -124,12 +124,13 @@ def compare_vdnas(v1: VDNA, v2: VDNA) -> float:
 
         min_diff = min(min_diff, result_all.item())
 
-    if v1.type == "activation-ranges":
-        # No comparison function for activation ranges currently
+    if v1.type == "activation-ranges" or v1.type == "features":
+        # No comparison function for activation ranges or raw features currently
         if check_same_dist_data(v1.data, v2.data):
             min_diff = 0.0
         else:
             min_diff = 1e8
+
     return min_diff
 
 
@@ -153,4 +154,28 @@ def get_test_vdnas(distribution_name, feat_extractor):
         distribution_name=distribution_name, feat_extractor_name=feat_extractor, source="tests/test_data/single_image"
     )
 
-    return v1, v2, v3, v4
+    v5 = v1 + v2 + v3 + v4
+
+    return v1, v2, v3, v4, v5
+
+
+def get_test_vdnas_multi_and_sep(distribution_name, feat_extractor):
+    vdna_proc = VDNAProcessor()
+
+    v_all = vdna_proc.make_vdna(
+        distribution_name=distribution_name,
+        feat_extractor_name=feat_extractor,
+        source="tests/test_data/multiple_images",
+        batch_size=2,
+    )
+
+    multiple_images = [str(p) for p in Path("tests/test_data/multiple_images").glob("*")]
+
+    v_sep = [
+        vdna_proc.make_vdna(
+            distribution_name=distribution_name, feat_extractor_name=feat_extractor, source=[multiple_images[i]]
+        )
+        for i in range(len(multiple_images))
+    ]
+
+    return v_all, v_sep

@@ -17,13 +17,12 @@ class VDNAHist(VDNA):
         self.data = {}
 
     def _set_extraction_settings(self, feat_extractor: FeatureExtractionModel) -> FeatureExtractionModel:
-        feat_extractor.extraction_settings.accumulate_spatial_feats_in_hist = True
-        feat_extractor.extraction_settings.accumulate_sample_feats_in_hist = True
+        feat_extractor.extraction_settings.accumulate_feats_in_hist = True
         feat_extractor.extraction_settings.hist_nb_bins = self.hist_nb_bins
         feat_extractor.extraction_settings.normalise_feats = True
         return feat_extractor
 
-    def _fit_distribution(self, features_dict: Dict[str, torch.Tensor]):
+    def fit_distribution(self, features_dict: Dict[str, torch.Tensor]):
         # Already put in histograms during processing thanks to the extraction_settings
         self.data = features_dict
 
@@ -56,3 +55,11 @@ class VDNAHist(VDNA):
         for layer in self.data:
             histograms.append(self.get_all_neurons_in_layer_dist(layer))
         return torch.cat(histograms)
+
+    def __add__(self, other):
+        new_vdna = VDNAHist(self.hist_nb_bins)
+        new_vdna.hist_nb_bins = self.hist_nb_bins
+        new_vdna = self._common_before_add(other, new_vdna)
+        for layer in self.data:
+            new_vdna.data[layer] = self.data[layer] + other.data[layer]
+        return new_vdna

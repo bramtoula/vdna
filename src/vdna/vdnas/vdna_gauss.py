@@ -30,7 +30,7 @@ class VDNAGauss(VDNA):
         feat_extractor.extraction_settings.average_feats_spatially = True
         return feat_extractor
 
-    def _fit_distribution(self, features_dict: Dict[str, torch.Tensor]):
+    def fit_distribution(self, features_dict: Dict[str, torch.Tensor]):
         self.data = {}
         for layer in features_dict:
             self.data[layer] = _get_gaussian_params(features_dict[layer])
@@ -74,3 +74,21 @@ class VDNAGauss(VDNA):
             mus.append(self.data[layer_name]["mu"])
             variances.append(self.data[layer_name]["var"])
         return {"mu": torch.cat(mus), "var": torch.cat(variances)}
+
+    def __add__(self, other):
+        new_vdna = VDNAGauss()
+        new_vdna = self._common_before_add(other, new_vdna)
+
+        for layer in self.data:
+            new_vdna.data[layer] = {}
+            new_vdna.data[layer]["mu"] = (
+                self.data[layer]["mu"] * self.num_images + other.data[layer]["mu"] * other.num_images
+            ) / (self.num_images + other.num_images)
+
+            new_vdna.data[layer]["var"] = (
+                self.data[layer]["var"] * (self.num_images - 1)
+                + self.num_images * (self.data[layer]["mu"] - new_vdna.data[layer]["mu"]) ** 2
+                + other.data[layer]["var"] * (other.num_images - 1)
+                + other.num_images * (other.data[layer]["mu"] - new_vdna.data[layer]["mu"]) ** 2
+            ) / (self.num_images + other.num_images - 1)
+        return new_vdna

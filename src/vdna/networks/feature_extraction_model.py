@@ -109,6 +109,9 @@ class FeatureExtractionModel(nn.Module):
         if isinstance(data_settings.source, List) and isinstance(data_settings.source[0], np.ndarray):
             images = data_settings.source
             l_files = None
+        elif isinstance(data_settings.source, np.ndarray):
+            images = [data_settings.source]
+            l_files = None
         else:
             images = None
             l_files = self.get_files_list(data_settings)
@@ -144,7 +147,7 @@ class FeatureExtractionModel(nn.Module):
         # wrap the images in a dataloader for parallelizing the resize operation
         if (
             not self.extraction_settings.average_feats_spatially
-            and not self.extraction_settings.accumulate_spatial_feats_in_hist
+            and not self.extraction_settings.accumulate_feats_in_hist
             and not self.extraction_settings.keep_only_min_max
         ):
             logging.warning(
@@ -164,6 +167,7 @@ class FeatureExtractionModel(nn.Module):
             with torch.no_grad():
                 feats = self.get_batch_features(batch, device)
 
+            # Process features
             if self.extraction_settings.average_feats_spatially:
                 for layer in feats:
                     feats[layer] = torch.mean(feats[layer], dim=(2, 3), keepdim=True)
@@ -172,20 +176,19 @@ class FeatureExtractionModel(nn.Module):
                 for layer in feats:
                     feats[layer] = (feats[layer] - self.norm_means_per_layer[layer]) / self.norm_stds_per_layer[layer]
 
-            if (
-                self.extraction_settings.accumulate_spatial_feats_in_hist
-                or self.extraction_settings.accumulate_sample_feats_in_hist
-            ):
+            if self.extraction_settings.accumulate_feats_in_hist:
                 for layer in feats:
                     feats[layer] = histogram_per_channel(
                         feats[layer],
                         hist_nb_bins=self.extraction_settings.hist_nb_bins,
                         hist_range=self.extraction_settings.hist_range,
+                        keep_samples_separate=self.extraction_settings.keep_sample_feats_separate,
                     )
 
+            # Merge with previously accumulated features
             for layer in feats:
-                if (
-                    not self.extraction_settings.accumulate_sample_feats_in_hist
+                if self.extraction_settings.keep_sample_feats_separate or (
+                    not self.extraction_settings.accumulate_feats_in_hist
                     and not self.extraction_settings.keep_only_min_max
                 ):
                     # Keep all features for each batch in a list
@@ -203,10 +206,17 @@ class FeatureExtractionModel(nn.Module):
                         acc_feats[layer] = feats[layer]
 
         if (
-            not self.extraction_settings.accumulate_sample_feats_in_hist
-            and not self.extraction_settings.keep_only_min_max
-        ):
+            not self.extraction_settings.accumulate_feats_in_hist and not self.extraction_settings.keep_only_min_max
+        ) or self.extraction_settings.keep_sample_feats_separate:
             acc_feats = {layer: torch.cat(acc_feats[layer]) for layer in acc_feats}
+
+        # Return a list with one dict per image if we were keeping samples separate
+        if self.extraction_settings.keep_sample_feats_separate:
+            acc_feats_list = []
+            n_ims = len(acc_feats[layer])
+            for i in range(n_ims):
+                acc_feats_list.append({l: acc_feats[l][i] for l in acc_feats})
+            acc_feats = acc_feats_list
 
         dataset = dataloader.dataset
 

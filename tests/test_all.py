@@ -6,7 +6,12 @@ import pytest
 
 from vdna import NFD, VDNAProcessor
 
-from utils import get_test_vdnas, check_save_load, compare_vdnas
+from utils import (
+    check_save_load,
+    compare_vdnas,
+    get_test_vdnas,
+    get_test_vdnas_multi_and_sep,
+)
 
 
 @pytest.mark.parametrize(
@@ -17,6 +22,7 @@ from utils import get_test_vdnas, check_save_load, compare_vdnas
         "histogram-1000",
         "histogram-50",
         "activation-ranges",
+        "features",
     ],
 )
 @pytest.mark.parametrize(
@@ -30,44 +36,61 @@ from utils import get_test_vdnas, check_save_load, compare_vdnas
         "dino_vit_base",
         "rand_resnet50",
         "clip_im_vit_b16",
-        "dinov2_small_224",
-        "dinov2_base_224",
+        "cosplace_resnet101_128",
+        "places365_resnet50",
     ],
 )
 class TestVDNAs:
+    def test_sum_of_dnas(self, distribution_name, feat_extractor, tol=1e-3):
+        v_all, v_sep = get_test_vdnas_multi_and_sep(distribution_name, feat_extractor)
+
+        dna_sum = v_sep[0]
+        for i in range(1, len(v_sep)):
+            dna_sum += v_sep[i]
+
+        assert compare_vdnas(v_all, dna_sum) <= tol
+
     def test_get_dists(self, distribution_name, feat_extractor):
-        v1, v2, v3, v4 = get_test_vdnas(distribution_name, feat_extractor)
+        v1, v2, v3, v4, v5 = get_test_vdnas(distribution_name, feat_extractor)
         neurons_list = v1.neurons_list
         for layer in neurons_list:
             v1.get_all_neurons_in_layer_dist(layer)
             v2.get_all_neurons_in_layer_dist(layer)
             v3.get_all_neurons_in_layer_dist(layer)
             v4.get_all_neurons_in_layer_dist(layer)
+            v5.get_all_neurons_in_layer_dist(layer)
             for neuron_id in range(neurons_list[layer]):
                 v1.get_neuron_dist(layer, neuron_id)
                 v2.get_neuron_dist(layer, neuron_id)
                 v3.get_neuron_dist(layer, neuron_id)
                 v4.get_neuron_dist(layer, neuron_id)
+                v5.get_neuron_dist(layer, neuron_id)
 
         v1.get_all_neurons_dists()
         v2.get_all_neurons_dists()
         v3.get_all_neurons_dists()
         v4.get_all_neurons_dists()
+        v5.get_all_neurons_dists()
 
     def test_comp_vdnas(self, distribution_name, feat_extractor, tol=1e-3):
-        v1, v2, v3, v4 = get_test_vdnas(distribution_name, feat_extractor)
+        v1, v2, v3, v4, v5 = get_test_vdnas(distribution_name, feat_extractor)
 
         assert compare_vdnas(v1, v2) > tol
         assert compare_vdnas(v1, v3) > tol
         assert compare_vdnas(v1, v4) > tol
+        assert compare_vdnas(v1, v5) > tol
         assert compare_vdnas(v2, v3) > tol
         assert compare_vdnas(v2, v4) > tol
+        assert compare_vdnas(v2, v5) > tol
         assert compare_vdnas(v3, v4) > tol
+        assert compare_vdnas(v3, v5) > tol
+        assert compare_vdnas(v4, v5) > tol
 
         assert compare_vdnas(v1, v1) <= tol
         assert compare_vdnas(v2, v2) <= tol
         assert compare_vdnas(v3, v3) <= tol
         assert compare_vdnas(v4, v4) <= tol
+        assert compare_vdnas(v5, v5) <= tol
 
     def test_layer_gauss_conversion(self, distribution_name, feat_extractor):
         if distribution_name != "gaussian":
@@ -92,12 +115,12 @@ class TestVDNAs:
         vdna_proc = VDNAProcessor()
 
         # From a directory
-        vdna = vdna_proc.make_vdna(
+        vdna_0 = vdna_proc.make_vdna(
             distribution_name=distribution_name,
             feat_extractor_name=feat_extractor,
             source="tests/test_data/multiple_images",
         )
-        check_save_load(vdna, 1e-2)
+        check_save_load(vdna_0, 1e-2)
 
         # From a list of np arrays
         images = [
@@ -105,41 +128,45 @@ class TestVDNAs:
             np.random.rand(224, 448, 3),
             np.random.rand(448, 448, 3),
         ]
-        vdna = vdna_proc.make_vdna(
+        vdna_1 = vdna_proc.make_vdna(
             distribution_name=distribution_name,
             feat_extractor_name=feat_extractor,
             source=images,
         )
-        check_save_load(vdna, 1e-2)
+        check_save_load(vdna_1, 1e-2)
 
         # From a list with a single np array
         images = [np.random.rand(448, 224, 3)]
-        vdna = vdna_proc.make_vdna(
+        vdna_2 = vdna_proc.make_vdna(
             distribution_name=distribution_name,
             feat_extractor_name=feat_extractor,
             source=images,
         )
-        check_save_load(vdna, 1e-2)
+        check_save_load(vdna_2, 1e-2)
 
         # From a list of string paths
         images = [
             "tests/test_data/multiple_images/Lenna_(test_image).png",
             "tests/test_data/multiple_images/4.1.07.tiff",
         ]
-        vdna = vdna_proc.make_vdna(
+        vdna_3 = vdna_proc.make_vdna(
             distribution_name=distribution_name,
             feat_extractor_name=feat_extractor,
             source=images,
         )
-        check_save_load(vdna, 1e-2)
+        check_save_load(vdna_3, 1e-2)
 
         # From a path to an image
-        vdna = vdna_proc.make_vdna(
+        vdna_4 = vdna_proc.make_vdna(
             distribution_name=distribution_name,
             feat_extractor_name=feat_extractor,
             source="tests/test_data/multiple_images/Lenna_(test_image).png",
         )
-        check_save_load(vdna, 1e-2)
+        check_save_load(vdna_4, 1e-2)
+
+        # From combining vdnas
+        vdna_all = vdna_0 + vdna_1 + vdna_2 + vdna_3 + vdna_4
+        check_save_load(vdna_all, 1e-2)
 
     def test_make_vdnas_options(self, distribution_name, feat_extractor):
         vdna_proc = VDNAProcessor()
@@ -204,7 +231,9 @@ class TestVDNAs:
 
 
 if __name__ == "__main__":
-    distribution_name = "activation-ranges"
+    distribution_name = "histogram-50"
+    # distribution_name = "activation-ranges"
+    # distribution_name = "layer-gaussian"
     feat_extractor = "mugs_vit_base"
     vdna_tests = TestVDNAs()
     vdna_tests.test_get_dists(distribution_name, feat_extractor)
